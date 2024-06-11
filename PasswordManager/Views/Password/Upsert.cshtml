@@ -1,0 +1,104 @@
+﻿@model Password
+
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Create Password" : "Edit Password";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Upsert" method="post">
+    <input asp-for="Id" hidden />
+    <div class="form-group">
+        <label asp-for="Website" class="control-label"></label>
+        <input asp-for="Website" class="form-control" />
+        <span asp-validation-for="Website" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Login" class="control-label"></label>
+        <input asp-for="Login" class="form-control" />
+        <span asp-validation-for="Login" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PasswordValue" class="control-label"></label>
+        <input asp-for="PasswordValue" class="form-control" id="PasswordValue" />
+        <span asp-validation-for="PasswordValue" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#passwordModal">Generate Password</button>
+    </div>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passwordModalLabel">Generate Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="passwordOptionsForm">
+                    <div class="form-group">
+                        <label for="passwordLength">Length</label>
+                        <input type="number" class="form-control" id="passwordLength" value="12" />
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="upperCase" checked />
+                        <label class="form-check-label" for="upperCase">Include Uppercase Letters</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="numbers" checked />
+                        <label class="form-check-label" for="numbers">Include Numbers</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="specials" checked />
+                        <label class="form-check-label" for="specials">Include Special Characters</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="generatePasswordButton">Generate</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#generatePasswordButton').click(function () {
+                var length = $('#passwordLength').val();
+                var upperCase = $('#upperCase').is(':checked');
+                var numbers = $('#numbers').is(':checked');
+                var specials = $('#specials').is(':checked');
+
+                $.ajax({
+                    url: '@Url.Action("GeneratePassword", "Password")',
+                    type: 'POST',
+                    data: {
+                        length: length,
+                        upperCase: upperCase,
+                        numbers: numbers,
+                        specials: specials
+                    },
+                    success: function (response) {
+                        $('#PasswordValue').val(response);
+                        $('#passwordModal').modal('hide');
+                    }
+                });
+            });
+        });
+    </script>
+}

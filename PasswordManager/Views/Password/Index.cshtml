@@ -1,0 +1,55 @@
+﻿@model List<Password>
+
+<style>
+    .button-style {
+    
+        cursor: pointer;
+       
+    }
+
+        .button-style:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            @foreach (var password in Model)
+            {
+                <ul class="list-group">
+                    <li class="list-group-item active" aria-current="true">@password.Website</li>
+                    <li style="cursor:pointer;" onclick="copiarLogin('@password.Login')" class="list-group-item button-style">Login: @password.Login</li>
+                    <li style="cursor:pointer;" onclick="copiarSenha('@password.DecryptedPassword')" class=" button-style list-group-item">Senha: @password.DecryptedPassword</li>
+                </ul>
+                
+
+                <br />
+
+            }
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function copiarSenha(senha) {
+        var input = document.createElement('input');
+        input.setAttribute('value', senha);
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        alert('Senha copiada para a área de transferência');
+    }
+
+    function copiarLogin(login) {
+        var input = document.createElement('input');
+        input.setAttribute('value', login);
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        alert('Login copiado para a área de transferência');
+    }
+</script>
