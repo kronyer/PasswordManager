@@ -8,7 +8,7 @@ public static class PasswordEncryptor
         using (Aes aesAlg = Aes.Create())
         {
             aesAlg.Key = key;
-            aesAlg.IV = new byte[16]; // Usando IV fixo para simplificar, pode ser melhorado para uso real
+            aesAlg.IV = new byte[16];
 
             ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 

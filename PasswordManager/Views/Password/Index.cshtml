@@ -8,17 +8,34 @@
     }
 
         .button-style:hover {
-            background-color: #0056b3;
+            background-color: lightgrey;
         }
 </style>
+
+<div class="col-4">
+    <form method="get" asp-action="Index">
+        <div class="input-group mb-3">
+            <input type="text" name="search" class="form-control" placeholder="Pesquisar por Website" aria-label="Pesquisar por Website" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Pesquisar</button>
+        </div>
+    </form>
+</div>
 
 <div class="container">
     <div class="row">
         <div class="col-8">
             @foreach (var password in Model)
             {
-                <ul class="list-group">
-                    <li class="list-group-item active" aria-current="true">@password.Website</li>
+                if(Model.Count == 0)
+                {
+                    <h2>Nenhuma senha registrada...</h2>
+                }
+                <ul class="list-group m-2">
+                    <li class="list-group-item active" aria-current="true">@password.Website
+                        <a asp-action="Upsert" asp-route-id=@password.Id>
+                            <i class="text-white fa-solid fa-pen-to-square"></i>
+                            </a>
+                    </li>
                     <li style="cursor:pointer;" onclick="copiarLogin('@password.Login')" class="list-group-item button-style">Login: @password.Login</li>
                     <li style="cursor:pointer;" onclick="copiarSenha('@password.DecryptedPassword')" class=" button-style list-group-item">Senha: @password.DecryptedPassword</li>
                 </ul>

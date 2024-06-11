@@ -21,10 +21,23 @@ namespace PasswordManager.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search)
         {
             var userId = _userManager.GetUserId(User);
+            
             var user = await _userManager.FindByIdAsync(userId);
+            if (!string.IsNullOrEmpty(search))
+            {
+                
+
+                List<Password> filteredPasswords = _db.Passwords.Where(x => x.UserId == userId && x.Website.Contains(search)).ToList();
+                foreach (var password in filteredPasswords)
+                {
+                    password.DecryptedPassword = PasswordEncryptor.DecryptPassword(password.PasswordValue, user.EncryptionKey);
+                }
+                return View(filteredPasswords);
+            }
+            
 
            List<Password> userPasswords =  _db.Passwords.Where(x => x.UserId == userId).ToList();
             foreach (var password in userPasswords)
