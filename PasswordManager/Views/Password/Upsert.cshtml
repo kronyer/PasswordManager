@@ -4,38 +4,44 @@
     ViewData["Title"] = Model.Id == 0 ? "Create Password" : "Edit Password";
 }
 
-<h2>@ViewData["Title"]</h2>
 
-<form asp-action="Upsert" method="post">
-    <input asp-for="Id" hidden />
-    <div class="form-group">
-        <label asp-for="Website" class="control-label"></label>
-        <input asp-for="Website" class="form-control" />
-        <span asp-validation-for="Website" class="text-danger"></span>
+<br />
+<br />
+<div class="container">
+    <div class="row align-content-center justify-content-center">
+        <div class="col-5">
+            <h2>@ViewData["Title"]</h2>
+            <form asp-action="Upsert" method="post">
+                <input asp-for="Id" hidden />
+                <div class="form-group">
+                    <label asp-for="Website" class="control-label"></label>
+                    <input asp-for="Website" class="form-control" />
+                    <span asp-validation-for="Website" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Login" class="control-label"></label>
+                    <input asp-for="Login" class="form-control" />
+                    <span asp-validation-for="Login" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PasswordValue" class="control-label"></label>
+                    <input asp-for="PasswordValue" value="" class="form-control" id="PasswordValue" />
+                    <span asp-validation-for="PasswordValue" class="text-danger"></span>
+                    <button type="button" class="btn btn-sm btn-link mt-0 pt-0" data-toggle="modal" data-target="#passwordModal">Generate Password</button>
+                </div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-5 text-end">
+            <img class="pt-0 mt-0" src="~/vaultregister.jpg" width="100%"/>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Login" class="control-label"></label>
-        <input asp-for="Login" class="form-control" />
-        <span asp-validation-for="Login" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="PasswordValue" class="control-label"></label>
-        <input asp-for="PasswordValue" value="" class="form-control" id="PasswordValue" />
-        <span asp-validation-for="PasswordValue" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#passwordModal">Generate Password</button>
-    </div>
-    <input type="hidden" asp-for="Id" />
-    <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" />
-    </div>
-
-</form>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
