@@ -4,7 +4,12 @@
     ViewData["Title"] = Model.Id == 0 ? "Create Password" : "Edit Password";
 }
 
+<style>
+    h2 {
+        font-family: 'Nova Square';
+    }
 
+</style>
 <br />
 <br />
 <div class="container">
@@ -25,7 +30,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="PasswordValue" class="control-label"></label>
-                    <input asp-for="PasswordValue" value="" class="form-control" id="PasswordValue" />
+                    <input asp-for="PasswordValue" value="" autocomplete="off" class="form-control" id="PasswordValue" />
                     <span asp-validation-for="PasswordValue" class="text-danger"></span>
                     <button type="button" class="btn btn-sm btn-link mt-0 pt-0" data-toggle="modal" data-target="#passwordModal">Generate Password</button>
                 </div>
@@ -37,7 +42,7 @@
             </form>
         </div>
         <div class="col-5 text-end">
-            <img class="pt-0 mt-0" src="~/vaultregister.jpg" width="100%"/>
+            <img class="pt-0 mt-0" src="~/vaultregister.jpg" width="100%" />
         </div>
     </div>
 </div>

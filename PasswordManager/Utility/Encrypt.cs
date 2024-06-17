@@ -3,12 +3,15 @@ using System.Text;
 
 public static class PasswordEncryptor
 {
-    public static string EncryptPassword(string password, byte[] key)
+    public static string EncryptPassword(string password, byte[] key, out byte[] iv)
     {
         using (Aes aesAlg = Aes.Create())
         {
             aesAlg.Key = key;
-            aesAlg.IV = new byte[16];
+            aesAlg.GenerateIV();
+            iv = aesAlg.IV;
+
+            aesAlg.Padding = PaddingMode.PKCS7;
 
             ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
@@ -26,12 +29,14 @@ public static class PasswordEncryptor
         }
     }
 
-    public static string DecryptPassword(string encryptedPassword, byte[] key)
+    public static string DecryptPassword(string encryptedPassword, byte[] key, byte[] iv)
     {
         using (Aes aesAlg = Aes.Create())
         {
             aesAlg.Key = key;
-            aesAlg.IV = new byte[16]; // Usando IV fixo para simplificar, pode ser melhorado para uso real
+            aesAlg.IV = iv;
+
+            aesAlg.Padding = PaddingMode.PKCS7;
 
             ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 

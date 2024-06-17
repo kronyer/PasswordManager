@@ -33,16 +33,17 @@ namespace PasswordManager.Controllers
                 List<Password> filteredPasswords = _db.Passwords.Where(x => x.UserId == userId && x.Website.Contains(search)).ToList();
                 foreach (var password in filteredPasswords)
                 {
-                    password.DecryptedPassword = PasswordEncryptor.DecryptPassword(password.PasswordValue, user.EncryptionKey);
+                    var decryptedWithSalt = PasswordEncryptor.DecryptPassword(password.PasswordValue, user.EncryptionKey, password.PasswordIV);
+                    password.DecryptedPassword = decryptedWithSalt.Substring(0, decryptedWithSalt.Length - password.Salt.Length);
                 }
                 return View(filteredPasswords);
             }
-            
 
            List<Password> userPasswords =  _db.Passwords.Where(x => x.UserId == userId).ToList();
             foreach (var password in userPasswords)
             {
-                password.DecryptedPassword = PasswordEncryptor.DecryptPassword(password.PasswordValue, user.EncryptionKey);
+                var decryptedWithSalt = PasswordEncryptor.DecryptPassword(password.PasswordValue, user.EncryptionKey, password.PasswordIV);
+                password.DecryptedPassword = decryptedWithSalt.Substring(0, decryptedWithSalt.Length - password.Salt.Length);
             }
             return View(userPasswords);
         }
@@ -76,9 +77,15 @@ namespace PasswordManager.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             var userKey = user.EncryptionKey;
 
+            model.Salt = SaltGenerator.GenerateSalt();
+
+            var passwordWithSalt = model.PasswordValue + model.Salt;
+
             if (ModelState.IsValid)
             {
-                model.PasswordValue = PasswordEncryptor.EncryptPassword(model.PasswordValue, userKey);
+                byte[] iv;
+                model.PasswordValue = PasswordEncryptor.EncryptPassword(passwordWithSalt, userKey, out iv);
+                model.PasswordIV = iv;
 
                 if (model.Id == 0)
                 {
@@ -93,6 +100,37 @@ namespace PasswordManager.Controllers
                 return RedirectToAction("Index");
             }
             return View(model);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAsync(int? id)
+        {
+            Password model;
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            else
+            {
+                model = await _db.Passwords.FindAsync(id);
+                if (model == null)
+                {
+                    return NotFound();
+                }
+            }
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (model.UserId == userId)
+            {
+                _db.Remove(model);
+                _db.SaveChanges();
+
+                return Json(new { success = true, message = "Senha deletada com sucesso" });
+            }
+            else
+            {
+                return BadRequest(new { error = "Você não tem permissão para deletar esta senha" });
+            }
         }
 
         [HttpPost]

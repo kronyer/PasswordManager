@@ -1,6 +1,21 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<br />
+<br />
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-7 bg-white m-3">
+            <h1>@ViewData["Title"]</h1>
+            <br />
+            <p>Nosso Password Manager utiliza técnicas avançadas de criptografia para garantir a segurança das suas senhas. Cada senha é criptografada usando o algoritmo AES de 128 bits, juntamente com um IV (Vetor de Inicialização) aleatório gerado para cada senha. Isso significa que mesmo que duas senhas sejam idênticas, suas versões criptografadas serão diferentes, aumentando a segurança dos seus dados.</p>
+            <p>Além disso, utilizamos o esquema de preenchimento PKCS7 para garantir que todas as senhas criptografadas tenham um tamanho múltiplo do tamanho do bloco, evitando assim vazamentos de informações sobre o tamanho da senha original.</p>
+            <p>Cada usuário tem sua própria chave de criptografia, o que significa que mesmo que um invasor tenha acesso aos dados do banco de dados, as senhas continuarão seguras, pois é necessário também obter a chave de criptografia específica do usuário para descriptografar as senhas.</p>
+            <p>Essas medidas de segurança adicionais garantem que suas senhas estejam protegidas contra acesso não autorizado, mantendo sua privacidade e segurança online.</p>
+            <br />
+
+        </div>
+    </div>
+</div>
+

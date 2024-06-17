@@ -2,54 +2,75 @@
 
 <style>
     .button-style {
-    
         cursor: pointer;
-       background-color: white;
+        background-color: white;
     }
 
         .button-style:hover {
             background-color: lightgray;
         }
+
+        h2{
+        font-family: 'Nova Square';
+    }
 </style>
 
-<div class="col-4">
-    <form method="get" asp-action="Index">
-        <div class="input-group mb-3">
-            <input type="text" name="search" class="form-control" placeholder="Pesquisar por Website" aria-label="Pesquisar por Website" aria-describedby="button-addon2">
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Pesquisar</button>
-        </div>
-    </form>
+<br />
+<div class="row">
+    <div class=" ps-4 ms-3 col-4">
+        <h2>Minhas Senhas</h2>
+        <form method="get" asp-action="Index">
+            <div class="input-group mb-3">
+                <input type="text" name="search" class="form-control" placeholder="Pesquisar por Senha" aria-label="Pesquisar por Website" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Pesquisar</button>
+            </div>
+        </form>
+
+    </div>
+    <div class=" col-4 text-end pe-5 m-0">
+        <br />
+        <br />
+        <a asp-action="Upsert" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Criar nova senha
+        </a>
+    </div>
 </div>
+
+
 
 <div class="container">
     <div class="row">
         <div class="col-8">
             @foreach (var password in Model)
             {
-                if(Model.Count == 0)
+                if (Model.Count == 0)
                 {
                     <h2>Nenhuma senha registrada...</h2>
                 }
                 <ul class="list-group m-2">
-                    <li class="list-group-item active" aria-current="true">@password.Website
+                    <li class="list-group-item active" aria-current="true">
+                        @password.Website
                         <a asp-action="Upsert" asp-route-id=@password.Id>
-                            <i class="text-white fa-solid fa-pen-to-square"></i>
-                            </a>
+                            <i class="ps-2 text-white fa-solid fa-pen-to-square"></i>
+                        </a>
+                        <a href="javascript:void(0);" onclick="Delete('@Url.Action("Delete", new { id = password.Id })')">
+                            <i class="text-white px-2 fa-solid fa-trash"></i>
+                        </a>
                     </li>
-                    
+
                     <li style="cursor:pointer;" onclick="copiarLogin('@password.Login')" class="list-group-item p-0 m-0">
                         <div style="cursor:pointer;" class="form-floating m-0">
                             <input style="cursor:pointer;" readonly value="@password.Login" class="form-control button-style border-0" id="floatingLogin">
                             <label style="cursor:pointer;" for="floatingLogin">Login</label>
                         </div>
-                        </li>
+                    </li>
                     <li style="cursor:pointer;" onclick="copiarSenha('@password.DecryptedPassword')" class=" p-0 m-0 list-group-item">
                         <div style="cursor:pointer;" class="form-floating m-0">
                             <input style="cursor:pointer;" readonly value="@password.DecryptedPassword" class="form-control button-style border-0" id="floatingPassword">
-                            <label  style="cursor:pointer;"for="floatingPassword">Senha</label>
+                            <label style="cursor:pointer;" for="floatingPassword">Senha</label>
                         </div>
                 </ul>
-                
+
 
                 <br />
 
@@ -59,24 +80,64 @@
 </div>
 
 
-<script>
-    function copiarSenha(senha) {
-        var input = document.createElement('input');
-        input.setAttribute('value', senha);
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand('copy');
-        document.body.removeChild(input);
-        alert('Senha copiada para a área de transferência');
-    }
+@section Scripts {
 
-    function copiarLogin(login) {
-        var input = document.createElement('input');
-        input.setAttribute('value', login);
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand('copy');
-        document.body.removeChild(input);
-        alert('Login copiado para a área de transferência');
-    }
-</script>
+    <script>
+        function copiarSenha(senha) {
+            var input = document.createElement('input');
+            input.setAttribute('value', senha);
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            alert('Senha copiada para a área de transferência');
+        }
+
+        function copiarLogin(login) {
+            var input = document.createElement('input');
+            input.setAttribute('value', login);
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            alert('Login copiado para a área de transferência');
+        }
+
+        function Delete(url) {
+            Swal.fire({
+                title: "Você tem certeza?",
+                text: "Você não poderá reverter isso!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sim, delete!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        success: function (data) {
+                            Swal.fire({
+                                title: 'Deletado!',
+                                text: 'Sua senha foi deletada.',
+                                icon: 'success',
+                                didClose: () => {
+                                    location.reload();
+                                }
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire(
+                                'Erro!',
+                                'Houve um problema ao deletar a senha.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+}

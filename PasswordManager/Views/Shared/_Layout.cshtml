@@ -8,26 +8,38 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PasswordManager.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap" rel="stylesheet">
+
+    <style>
+        nav {
+            font-family:'Nova Square';
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav style="height:110px" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav style="height:80px" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand me-5 ms-2" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-2xl fa-vault"></i></a>
+                <a class="navbar-brand me-5 ms-2" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/safety-lock-svgrepo-com.svg" width="40" height="40" />
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="ms-5 navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item mx-3">
+                        <li class="nav-item mx-2">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item mx-3">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">About</a>
                         </li>
-                        <li class="nav-item mx-3">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Password" asp-action="Upsert">Password</a>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Password" asp-action="Upsert">Passwords</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -46,6 +58,7 @@
     <script src="https://unpkg.com/@@popperjs/core@2/dist/umd/popper.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/b030508f81.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
