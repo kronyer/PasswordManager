@@ -3,6 +3,12 @@
 Password Manager (falta um nome bom) é um gerenciador de senhas online no estilo Bitwarden, com criptografia das senhas no banco de dados.  
 Uma combinação de C#, com o .NET MVC e SQL server e um pouco de JavaScript
 
+
+
+https://github.com/kronyer/PasswordManager/assets/152650887/e24a7b21-ff89-4356-8b9c-0575b5b7b4a6
+
+
+
 ## Features
 - Autenticação através do scaffold do Razor
 - Senha armazenada com Criptografia AES
