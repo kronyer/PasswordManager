@@ -20,3 +20,6 @@ Uma combinação de C#, com o .NET MVC e SQL server e um pouco de JavaScript
 ## Desafios enfrentados
 - O CRUD é relativamente fácil de ser implementado, a dificuldade foi aprender a fazer uma chamada do javascript para gerar a senha aleatória diretamente na view do Create
 - Precisei estudar um pouco de criptografia e da biblioteca de criptografia da Microsoft (e foi muito interessante)
+
+## Mudanças futuras
+- A key do usuário talvez devesse ser protegida, ou nao constar no banco de dados. Pensar uma alternativa para validar a key do usuário sem ter ela no banco de dados
